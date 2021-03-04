@@ -8,7 +8,7 @@ public class User {
     private String loginPwd;//登录密码
     private String email;//邮箱
     private String expireTime;//失效时间
-    private String lockState;//是否锁定
+    private String lockState;//是否锁定 0：锁定   1：启用
     private String deptno;//部门编号
     private String allowIps;//允许访问ip
     private String createTime;//创建时间

@@ -14,10 +14,13 @@
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
+
     <servlet-mapping>
         <servlet-name>dispatcherServlet</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
+
+
     <!--注册创建spring容器监听器-->
     <context-param>
         <param-name>contextConfigLocation</param-name>
@@ -26,6 +29,10 @@
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
+
+
+
+
 
 
     <!--解决post乱码问题过滤器-->
