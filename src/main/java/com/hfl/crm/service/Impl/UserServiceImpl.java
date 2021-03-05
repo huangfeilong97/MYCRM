@@ -8,6 +8,7 @@ import com.hfl.crm.utils.DateTimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 
 
 @Service
@@ -16,6 +17,14 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
 
+    /**
+     * 登录验证
+     * @param loginAct
+     * @param loginPwd
+     * @param ip
+     * @return
+     * @throws LoginException
+     */
     @Override
     public User login(String loginAct, String loginPwd,String ip) throws LoginException {
 
@@ -44,5 +53,16 @@ public class UserServiceImpl implements UserService {
         }
 
         return user;
+    }
+
+    /**
+     * 获取所有用户列表
+     * @return
+     */
+    @Override
+    public List<User> getUserList() {
+
+        List<User> userList=userDao.getUserList();
+        return userList;
     }
 }

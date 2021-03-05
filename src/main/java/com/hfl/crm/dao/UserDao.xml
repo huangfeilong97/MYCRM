@@ -9,4 +9,9 @@
         from tbl_user where loginAct = #{loginAct} and loginPwd = #{loginPwd}
     </select>
 
+    <select id="getUserList" resultType="com.hfl.crm.entity.User">
+        select id,loginAct,name,loginPwd,email, expireTime,lockState,deptno,allowIps,createTime,createBy,editTime,editBy
+        from tbl_user
+    </select>
+
 </mapper>

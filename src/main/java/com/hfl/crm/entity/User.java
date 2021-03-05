@@ -1,6 +1,8 @@
 package com.hfl.crm.entity;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
 
     private String id;//uuid
     private String loginAct;//登录账号

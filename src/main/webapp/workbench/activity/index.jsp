@@ -19,7 +19,81 @@
 <script type="text/javascript">
 
 	$(function(){
-		
+		//添加操作
+		//data-toggle="modal"
+		$("#addBtn").click(function () {
+
+			$.fn.datetimepicker.dates['zh-CN'] = {
+				days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
+				daysShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+				daysMin:  ["日", "一", "二", "三", "四", "五", "六", "日"],
+				months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+				monthsShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+				today: "今天",
+				suffix: [],
+				meridiem: ["上午", "下午"]
+			};
+			//日期控件
+			$(".time").datetimepicker({
+				language:  'zh-CN',
+				minView: "month",
+				format: 'yyyy-mm-dd',
+				autoclose: true,
+				todayBtn: true,
+				pickerPosition: "bottom-left"
+			});
+
+			$.ajax({
+				url:"activity/getUserList",
+				type:"get",
+				dataType:"json",
+				success:function (data) {
+					//data:  UserList [{},{},...]
+					var html="<option></option>";
+
+					//遍历结果
+					$.each(data,function (index,user) {
+						html+="<option value='"+user.id+"'>"+user.name+"</option>"
+					})
+
+					$("#create-marketActivityOwner").html(html);
+
+					//默认选中当前用户
+					var id="${sessionScope.user.id}";
+					$("#create-marketActivityOwner").val(id);
+					//创建模态窗口
+					$("#createActivityModal").modal("show");
+
+				}
+
+			})
+
+			$("#saveBtn").click(function () {
+
+				$.ajax({
+					url:"activity/saveActivity",
+					type:"get",
+					data:{
+						"owner":$("#create-marketActivityOwner").val(),
+						"name":$("#create-marketActivityName").val,
+						"startDate":$("#create-startTime").val(),
+						"endDate":$("#create-endTime").val(),
+						"cost":$("#create-cost").val(),
+						"description":$("#create-describe").val()
+					},
+					dataType:"json",
+					success:function (data) {
+
+					}
+
+				})
+
+			})
+
+
+
+
+		})
 		
 		
 	});
@@ -40,15 +114,13 @@
 				</div>
 				<div class="modal-body">
 				
-					<form class="form-horizontal" role="form">
+					<form class="form-horizontal" role="form" id="create-form">
 					
 						<div class="form-group">
 							<label for="create-marketActivityOwner" class="col-sm-2 control-label">所有者<span style="font-size: 15px; color: red;">*</span></label>
 							<div class="col-sm-10" style="width: 300px;">
 								<select class="form-control" id="create-marketActivityOwner">
-								  <option>zhangsan</option>
-								  <option>lisi</option>
-								  <option>wangwu</option>
+
 								</select>
 							</div>
                             <label for="create-marketActivityName" class="col-sm-2 control-label">名称<span style="font-size: 15px; color: red;">*</span></label>
@@ -60,11 +132,11 @@
 						<div class="form-group">
 							<label for="create-startTime" class="col-sm-2 control-label">开始日期</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control" id="create-startTime">
+								<input type="text" class="form-control time" id="create-startTime">
 							</div>
 							<label for="create-endTime" class="col-sm-2 control-label">结束日期</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control" id="create-endTime">
+								<input type="text" class="form-control time" id="create-endTime">
 							</div>
 						</div>
                         <div class="form-group">
@@ -86,7 +158,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-primary" data-dismiss="modal">保存</button>
+					<button id="saveBtn" type="button" class="btn btn-primary">保存</button>
 				</div>
 			</div>
 		</div>
@@ -207,7 +279,7 @@
 			</div>
 			<div class="btn-toolbar" role="toolbar" style="background-color: #F7F7F7; height: 50px; position: relative;top: 5px;">
 				<div class="btn-group" style="position: relative; top: 18%;">
-				  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createActivityModal"><span class="glyphicon glyphicon-plus"></span> 创建</button>
+				  <button id="addBtn" type="button" class="btn btn-primary" data-target="#createActivityModal"><span class="glyphicon glyphicon-plus"></span> 创建</button>
 				  <button type="button" class="btn btn-default" data-toggle="modal" data-target="#editActivityModal"><span class="glyphicon glyphicon-pencil"></span> 修改</button>
 				  <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> 删除</button>
 				</div>
